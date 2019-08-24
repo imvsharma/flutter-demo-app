@@ -1,5 +1,4 @@
 
-import 'package:english_words/english_words.dart' as prefix0;
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 
@@ -11,14 +10,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     ThemeData themeData = ThemeData(
       primarySwatch: Colors.red,
-    );
-    Scaffold scaffold = Scaffold(
-      appBar: AppBar(
-        title: Text('Welcome to Flutter'),
-      ),
-      body: Center(
-        child: RandomWords(),
-      ),
     );
 
     String title = "Welcome to Flutter";
@@ -39,6 +30,7 @@ class RandomWords extends StatefulWidget {
 // state class 
 class RandomWordsState extends State<RandomWords> {
   final List<WordPair> _suggestions = <WordPair>[];
+  final Set<WordPair> _saved = Set<WordPair>();
   final TextStyle _biggerFont = const TextStyle(fontSize: 18);
   Widget _buildSuggestions() {
     return ListView.builder(
@@ -57,7 +49,17 @@ class RandomWordsState extends State<RandomWords> {
   }
 
   Widget _buildRow(WordPair pair) {
-    return ListTile(title:Text(pair.asPascalCase, style: _biggerFont ));
+    final bool alreadySaved = _saved.contains(pair);
+    return ListTile(
+      title:Text(
+        pair.asPascalCase, 
+        style: _biggerFont 
+        ),
+      trailing: Icon(
+        alreadySaved? Icons.favorite: Icons.favorite_border,
+        color: alreadySaved ? Colors.red: null,
+      ),
+      );
   }
 
   @override
